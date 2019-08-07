@@ -2,24 +2,40 @@ import React from "react";
 
 import "./App.css";
 import axios from "axios";
+import UserCard from "./UserCard";
 
 class App extends React.Component {
   constructor() {
     super();
     this.state = {
-      user: []
+      userCard: []
     };
   }
 
   componentDidMount() {
-    axios.get("https://api.github.com/users/MichaelBaynon").then(res => {
-      this.setState({ user: res });
-      console.log(this.state.user);
-    });
+    this.fetchUser();
   }
 
+  fetchUser = () => {
+    fetch("https://api.github.com/users/MichaelBaynon")
+      .then(response => {
+        return response.json();
+      })
+      .then(users => this.setState({ userCard: users }))
+      .catch(err => {
+        console.log(err);
+      });
+  };
+
   render() {
-    return <div>Hello</div>;
+    console.log("render");
+    console.log(this.state.users);
+    return (
+      <div>
+        <h1>GitHub Users</h1>
+        <UserCard user={this.state.userCard} />
+      </div>
+    );
   }
 }
 
